@@ -370,3 +370,7 @@ put them back in again. -->
   * Matan Rosenberg <matan129@gmail.com>
   * gitch1 <63495046+gitch1@users.noreply.github.com>
   * ElonH <elonhhuang@gmail.com>
+  * Fred <fred@creativeprojects.tech>
+  * Sébastien Gross <renard@users.noreply.github.com>
+  * Maxime Suret <11944422+msuret@users.noreply.github.com>
+  * Caleb Case <caleb@storj.io>
