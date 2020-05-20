@@ -374,3 +374,6 @@ put them back in again. -->
   * Sébastien Gross <renard@users.noreply.github.com>
   * Maxime Suret <11944422+msuret@users.noreply.github.com>
   * Caleb Case <caleb@storj.io>
+  * Ben Zenker <imbenzenker@gmail.com>
+  * Martin Michlmayr <tbm@cyrius.com>
+  * Brandon McNama <bmcnama@pagerduty.com>

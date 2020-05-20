@@ -70,6 +70,9 @@ func init() {
 			Help:       "SSH password, leave blank to use ssh-agent.",
 			IsPassword: true,
 		}, {
+			Name: "key_pem",
+			Help: "Raw PEM-encoded private key, If specified, will override key_file parameter.",
+		}, {
 			Name: "key_file",
 			Help: "Path to PEM-encoded private key file, leave blank or set key-use-agent to use ssh-agent.",
 		}, {
@@ -172,6 +175,7 @@ type Options struct {
 	User              string `config:"user"`
 	Port              string `config:"port"`
 	Pass              string `config:"pass"`
+	KeyPem            string `config:"key_pem"`
 	KeyFile           string `config:"key_file"`
 	KeyFilePass       string `config:"key_file_pass"`
 	KeyUseAgent       bool   `config:"key_use_agent"`
@@ -390,6 +394,7 @@ func NewFs(name, root string, m configmap.Mapper) (fs.Fs, error) {
 	}
 
 	keyFile := env.ShellExpand(opt.KeyFile)
+	//keyPem := env.ShellExpand(opt.KeyPem)
 	// Add ssh agent-auth if no password or file specified
 	if (opt.Pass == "" && keyFile == "" && !opt.AskPassword) || opt.KeyUseAgent {
 		sshAgentClient, _, err := sshagent.New()
@@ -427,10 +432,20 @@ func NewFs(name, root string, m configmap.Mapper) (fs.Fs, error) {
 	}
 
 	// Load key file if specified
-	if keyFile != "" {
-		key, err := ioutil.ReadFile(keyFile)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to read private key file")
+	if keyFile != "" || opt.KeyPem != "" {
+		var key []byte
+		if opt.KeyPem == "" {
+			key, err = ioutil.ReadFile(keyFile)
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to read private key file")
+			}
+		} else {
+			// wrap in quotes because the config is a coming as a literal without them.
+			opt.KeyPem, err = strconv.Unquote("\"" + opt.KeyPem + "\"")
+			if err != nil {
+				return nil, errors.Wrap(err, "pem key not formatted properly")
+			}
+			key = []byte(opt.KeyPem)
 		}
 		clearpass := ""
 		if opt.KeyFilePass != "" {
@@ -470,7 +485,7 @@ func NewFs(name, root string, m configmap.Mapper) (fs.Fs, error) {
 	return NewFsWithConnection(ctx, name, root, m, opt, sshConfig)
 }
 
-// NewFsWithConnection creates a new Fs object from the name and root and a ssh.ClientConfig. It connects to
+// NewFsWithConnection creates a new Fs object from the name and root and an ssh.ClientConfig. It connects to
 // the host specified in the ssh.ClientConfig
 func NewFsWithConnection(ctx context.Context, name string, root string, m configmap.Mapper, opt *Options, sshConfig *ssh.ClientConfig) (fs.Fs, error) {
 	f := &Fs{
@@ -1021,7 +1036,7 @@ func parseHash(bytes []byte) string {
 
 // Parses the byte array output from the SSH session
 // returned by an invocation of df into
-// the disk size, used space, and avaliable space on the disk, in that order.
+// the disk size, used space, and available space on the disk, in that order.
 // Only works when `df` has output info on only one disk
 func parseUsage(bytes []byte) (spaceTotal int64, spaceUsed int64, spaceAvail int64) {
 	spaceTotal, spaceUsed, spaceAvail = -1, -1, -1

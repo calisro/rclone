@@ -44,7 +44,7 @@ See the following for detailed instructions for
   * [Memory](/memory/)
   * [Microsoft Azure Blob Storage](/azureblob/)
   * [Microsoft OneDrive](/onedrive/)
-  * [Openstack Swift / Rackspace Cloudfiles / Memset Memstore](/swift/)
+  * [OpenStack Swift / Rackspace Cloudfiles / Memset Memstore](/swift/)
   * [OpenDrive](/opendrive/)
   * [Pcloud](/pcloud/)
   * [premiumize.me](/premiumizeme/)
@@ -402,7 +402,7 @@ you have a 10 Mbit/s connection and you wish rclone to use half of it
 - 5 Mbit/s.  This is 5/8 = 0.625MByte/s so you would use a `--bwlimit
 0.625M` parameter for rclone.
 
-On Unix systems (Linux, MacOS, …) the bandwidth limiter can be toggled by
+On Unix systems (Linux, macOS, …) the bandwidth limiter can be toggled by
 sending a `SIGUSR2` signal to rclone. This allows to remove the limitations
 of a long running rclone transfer and to restore it back to the value specified
 with `--bwlimit` quickly when needed. Assuming there is only one rclone instance
@@ -522,7 +522,7 @@ to disable server side move and server side copy use:
 
     --disable move,copy
 
-The features can be put in in any case.
+The features can be put in any case.
 
 To see a list of which features can be disabled use:
 
@@ -591,7 +591,7 @@ add multiple headers.
 rclone sync s3:test/src ~/dst --header-download "X-Amz-Meta-Test: Foo" --header-download "X-Amz-Meta-Test2: Bar"
 ```
 
-See the Github issue [here](https://github.com/rclone/rclone/issues/59) for
+See the GitHub issue [here](https://github.com/rclone/rclone/issues/59) for
 currently supported backends.
 
 ### --header-upload ###
@@ -603,7 +603,7 @@ multiple headers.
 rclone sync ~/src s3:test/dst --header-upload "Content-Disposition: attachment; filename='cool.html'" --header-upload "X-Amz-Meta-Test: FooBar"
 ```
 
-See the Github issue [here](https://github.com/rclone/rclone/issues/59) for
+See the GitHub issue [here](https://github.com/rclone/rclone/issues/59) for
 currently supported backends.
 
 ### --ignore-case-sync ###
@@ -794,13 +794,13 @@ Rclone will exit with exit code 8 if the transfer limit is reached.
 This modifies the behavior of `--max-transfer`
 Defaults to `--cutoff-mode=hard`.
 
-Specifiying `--cutoff-mode=hard` will stop transferring immediately
+Specifying `--cutoff-mode=hard` will stop transferring immediately
 when Rclone reaches the limit.
 
-Specifiying `--cutoff-mode=soft` will stop starting new transfers
+Specifying `--cutoff-mode=soft` will stop starting new transfers
 when Rclone reaches the limit.
 
-Specifiying `--cutoff-mode=cautious` will try to prevent Rclone
+Specifying `--cutoff-mode=cautious` will try to prevent Rclone
 from reaching the limit.
 
 ### --modify-window=TIME ###
@@ -827,7 +827,7 @@ time) then each thread writes directly into the file at the correct
 place.  This means that rclone won't create fragmented or sparse files
 and there won't be any assembly time at the end of the transfer.
 
-The number of threads used to dowload is controlled by
+The number of threads used to download is controlled by
 `--multi-thread-streams`.
 
 Use `-vv` if you wish to see info about the threads.
@@ -843,6 +843,12 @@ with any source.
 **NB** that multi thread copies are disabled for local to local copies
 as they are faster without unless `--multi-thread-streams` is set
 explicitly.
+
+**NB** on Windows using multi-thread downloads will cause the
+resulting files to be [sparse](https://en.wikipedia.org/wiki/Sparse_file).
+Use `--local-no-sparse` to disable sparse files (which may cause long
+delays at the start of downloads) or disable multi-thread downloads
+with `--multi-thread-streams 0`
 
 ### --multi-thread-streams=N ###
 
@@ -907,6 +913,20 @@ are doing a copy where lots of the files under consideration haven't
 changed and won't need copying then you shouldn't use `--no-traverse`.
 
 See [rclone copy](/commands/rclone_copy/) for an example of how to use it.
+
+### --no-unicode-normalization ###
+
+Don't normalize unicode characters in filenames during the sync routine.
+
+Sometimes, an operating system will store filenames containing unicode
+parts in their decomposed form (particularly macOS). Some cloud storage
+systems will then recompose the unicode, resulting in duplicate files if
+the data is ever copied back to a local filesystem.
+
+Using this flag will disable that functionality, treating each unicode
+character as unique. For example, by default é and é will be normalized
+into the same character. With `--no-unicode-normalization` they will be
+treated as unique characters.
 
 ### --no-update-modtime ###
 
@@ -989,7 +1009,7 @@ Eg
 
 See the [Configuration Encryption](#configuration-encryption) for more info.
 
-See a [Windows Powershell example on the Wiki.](https://github.com/rclone/rclone/wiki/Windows-Powershell-use-rclone-password-command-for-Config-file-password)
+See a [Windows PowerShell example on the Wiki.](https://github.com/rclone/rclone/wiki/Windows-Powershell-use-rclone-password-command-for-Config-file-password)
 
 ### -P, --progress ###
 
@@ -1210,7 +1230,7 @@ Note also that `--track-renames` is incompatible with
 ### --track-renames-strategy (hash,modtime) ###
 
 This option changes the matching criteria for `--track-renames` to match
-by any combination of modtime, hash, size. Matchig by size is always enabled
+by any combination of modtime, hash, size. Matching by size is always enabled
 no matter what option is selected here. This also means
 that it enables `--track-renames` support for encrypted destinations.
 If nothing is specified, the default option is matching by hashes.
@@ -1357,7 +1377,7 @@ Prints the version number
 SSL/TLS options
 ---------------
 
-The outoing SSL/TLS connections rclone makes can be controlled with
+The outgoing SSL/TLS connections rclone makes can be controlled with
 these options.  For example this can be very useful with the HTTP or
 WebDAV backends. Rclone HTTP servers have their own set of
 configuration for SSL/TLS which you can find in their documentation.

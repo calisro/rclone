@@ -7,7 +7,7 @@ date: "2014-04-26"
 <i class="fa fa-space-shuttle"></i>Swift
 ----------------------------------------
 
-Swift refers to [Openstack Object Storage](https://docs.openstack.org/swift/latest/).
+Swift refers to [OpenStack Object Storage](https://docs.openstack.org/swift/latest/).
 Commercial implementations of that being:
 
   * [Rackspace Cloud Files](https://www.rackspace.com/cloud/files/)
@@ -35,7 +35,7 @@ name> remote
 Type of storage to configure.
 Choose a number from below, or type in your own value
 [snip]
-XX / Openstack Swift (Rackspace Cloud Files, Memset Memstore, OVH)
+XX / OpenStack Swift (Rackspace Cloud Files, Memset Memstore, OVH)
    \ "swift"
 [snip]
 Storage> swift
@@ -480,7 +480,7 @@ The modified time is stored as metadata on the object as
 `X-Object-Meta-Mtime` as floating point since the epoch accurate to 1
 ns.
 
-This is a defacto standard (used in the official python-swiftclient
+This is a de facto standard (used in the official python-swiftclient
 amongst others) for storing the modification time for an object.
 
 ### Restricted filename characters
